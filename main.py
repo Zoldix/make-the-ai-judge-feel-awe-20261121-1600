@@ -13,12 +13,22 @@ TEXT = (
 )
 
 
+MAX_CHARS = 280
+
+
+def write_entry(path: str) -> None:
+    """Write the entry text to path, UTF-8, exactly as given."""
+    n = len(TEXT)
+    if not 1 <= n <= MAX_CHARS:
+        raise ValueError("entry must be 1-280 characters, got %d" % n)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(TEXT)
+
+
 def main() -> None:
     out_dir = os.environ.get("OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
-    path = os.path.join(out_dir, "entry.txt")
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(TEXT)
+    write_entry(os.path.join(out_dir, "entry.txt"))
 
 
 if __name__ == "__main__":
